@@ -1,0 +1,22 @@
+{
+  "name": "readmegenerator",
+  "version": "1.0.0",
+  "description": "This is a readme generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turnerjeniah8/readmeGenerator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/turnerjeniah8/readmeGenerator/issues"
+  },
+  "homepage": "https://github.com/turnerjeniah8/readmeGenerator#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  }
+}
