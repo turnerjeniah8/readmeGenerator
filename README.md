@@ -12,3 +12,5 @@ The motivation for this project was to successfully troubleshoot and become more
 # Language Used
 * Javascript
 
+# Video 
+<iframe src="https://drive.google.com/file/d/1sJ67Ydx6m-1F5RpQHhpPw-nrHIOSoJYC/preview" width="640" height="480"></iframe> 
