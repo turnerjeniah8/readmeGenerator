@@ -1,11 +1,15 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
-const { writeFile } = require("../Develop/utils/generateMarkdown");
+const path = require('path');
+const generateMarkdown = require("../Develop/utils/generateMarkdown");
+// const writeFile = util.promisify(fs.writeFile);
+
+//Links questions to readme template
+const readmeTemplate = require("../Develop/readmeTemplate.js");
 
 // TODO: Create an array of questions for user input
-const promptUser = () => {
-    return inquirer.prompt ([
+const questions = [
 
 //Question #1 Project title 
         {
@@ -91,10 +95,17 @@ const promptUser = () => {
                         type: 'input',
                         message: "What licenses do you want to list?",
                         name: 'license',
-                        
+                        choices: ['MIT', 'APACHE', 'GPL3', 'NONE'],
 
                     },
-//Question #8 Github Username 
+//Question #8 Install
+                {
+                    type: 'input',
+                    name: 'installation',
+                    message: "What command should be used to install your project?",
+                    default: 'npm install'
+                },
+//Question #9 Github Username 
                 {
                     type: "input",
                     name: "github",
@@ -109,7 +120,7 @@ const promptUser = () => {
                     },
                 },
    
-//Question #9 Email 
+//Question #10 Email 
                 {
                     type: "input",
                     name: "email",
@@ -123,30 +134,56 @@ const promptUser = () => {
                         }
                     },
                 },
-                
- ]);
-};
-
-
+];
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, err => {
-        if (err) throw err;
-        console.log ('Success');
-    });
+ function writeToFile(fileName, template, data) {
+   return fs.writeFileSync(path.join(process.cwd(),fileName), template, data);
 };
 
 //function to initialize program
-async function init() {
-    const answers = await inquirer.prompt;
-    const markdown = generateMarkdown(answers);
-    writeToFile('../Develop/utils/generateMarkdown', markdown);
-  }
 // TODO: Create a function to initialize app
 function init() {
-    promptUser().then((data) => {
-        writeToFile(data);
-    });
+    inquirer.prompt(questions).then((inquirerResponses) => {
+        if (inquirerResponses.license === "None") {
+            var template = `
+            # ${inquirerResponses.title.trim()}
+            
+            ## Table of Contents
+            * [Installation](#installation)
+            
+            *[Questions] (#questions)
+            
+            ## Installation 
+            To Install, run the following command 
+            \`\`\`
+            ${inquirerResponses.installation.trim()}
+            \`\`\`
+
+            ## Questions 
+            If you have any questions about the project or would like to contribute please email me at ${inquirerResponses.email.trim()}. You can find more of my work at ${inquirerResponses.github.trim()}.
+            `
+        } else {
+            var template = `
+            # ${inquirerResponses.title.trim()}
+            
+            ## Table of Contents
+            * [Installation](#installation)
+            
+            *[Questions] (#questions)
+            
+            ## Installation 
+            To Install, run the following command 
+            \`\`\`
+            ${inquirerResponses.installation.trim()}
+            \`\`\`
+
+            ## Questions 
+            If you have any questions about the project or would like to contribute please email me at ${inquirerResponses.email.trim()}. You can find more of my work at ${inquirerResponses.github.trim()}.
+            `
+        }
+        console.log ('Generating README...');
+        writeToFile('README.md', generateMarkdown({...inquirerResponses}));
+    }); 
 }
 
 // Function call to initialize app
