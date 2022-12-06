@@ -146,8 +146,10 @@ function init() {
     inquirer.prompt(questions).then((inquirerResponses) => {
         if (inquirerResponses.license === "None") {
             var template = `
+
             # ${inquirerResponses.title.trim()}
-            
+            ![GitHub license](https://img.shields.io/badge/license-${data.license.replace(" ", "%20")}-blue.svg)
+
             ## Table of Contents
             * [Installation](#installation)
             
